@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dao.XihuDao">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        a.id as id
+        ,a.xihu_name as xihuName
+        ,a.xihu_photo as xihuPhoto
+        ,a.xihu_types as xihuTypes
+        ,a.xihu_price as xihuPrice
+        ,a.xihu_old_money as xihuOldMoney
+        ,a.xihu_new_money as xihuNewMoney
+        ,a.xihu_kucun_number as xihuKucunNumber
+        ,a.xihu_clicknum as xihuClicknum
+        ,a.shangxia_types as shangxiaTypes
+        ,a.xihu_delete as xihuDelete
+        ,a.xihu_content as xihuContent
+        ,a.create_time as createTime
+    </sql>
+    <select id="selectListView" parameterType="map" resultType="com.entity.view.XihuView" >
+        SELECT
+        <include refid="Base_Column_List" />
+
+--         级联表的字段
+
+        FROM xihu  a
+
+        <where>
+            <if test="params.ids != null">
+                and a.id in
+                <foreach item="item" index="index" collection="params.ids" open="(" separator="," close=")">
+                #{item}
+                </foreach>
+            </if>
+            <if test=" params.xihuName != '' and params.xihuName != null and params.xihuName != 'null' ">
+                and a.xihu_name like CONCAT('%',#{params.xihuName},'%')
+            </if>
+            <if test="params.xihuTypes != null and params.xihuTypes != ''">
+                and a.xihu_types = #{params.xihuTypes}
+            </if>
+            <if test="params.xihuPriceStart != null and params.xihuPriceStart != ''">
+                <![CDATA[  and a.xihu_price >= #{params.xihuPriceStart}   ]]>
+            </if>
+            <if test="params.xihuPriceEnd != null and params.xihuPriceEnd != ''">
+                <![CDATA[  and a.xihu_price <= #{params.xihuPriceEnd}   ]]>
+            </if>
+             <if test="params.xihuPrice != null and params.xihuPrice != ''">
+                and a.xihu_price = #{params.xihuPrice}
+             </if>
+            <if test="params.xihuOldMoneyStart != null ">
+                <![CDATA[  and a.xihu_old_money >= #{params.xihuOldMoneyStart}   ]]>
+            </if>
+            <if test="params.xihuOldMoneyEnd != null ">
+                <![CDATA[  and a.xihu_old_money <= #{params.xihuOldMoneyEnd}   ]]>
+            </if>
+            <if test="params.xihuNewMoneyStart != null ">
+                <![CDATA[  and a.xihu_new_money >= #{params.xihuNewMoneyStart}   ]]>
+            </if>
+            <if test="params.xihuNewMoneyEnd != null ">
+                <![CDATA[  and a.xihu_new_money <= #{params.xihuNewMoneyEnd}   ]]>
+            </if>
+            <if test="params.xihuKucunNumberStart != null and params.xihuKucunNumberStart != ''">
+                <![CDATA[  and a.xihu_kucun_number >= #{params.xihuKucunNumberStart}   ]]>
+            </if>
+            <if test="params.xihuKucunNumberEnd != null and params.xihuKucunNumberEnd != ''">
+                <![CDATA[  and a.xihu_kucun_number <= #{params.xihuKucunNumberEnd}   ]]>
+            </if>
+             <if test="params.xihuKucunNumber != null and params.xihuKucunNumber != ''">
+                and a.xihu_kucun_number = #{params.xihuKucunNumber}
+             </if>
+            <if test="params.xihuClicknumStart != null and params.xihuClicknumStart != ''">
+                <![CDATA[  and a.xihu_clicknum >= #{params.xihuClicknumStart}   ]]>
+            </if>
+            <if test="params.xihuClicknumEnd != null and params.xihuClicknumEnd != ''">
+                <![CDATA[  and a.xihu_clicknum <= #{params.xihuClicknumEnd}   ]]>
+            </if>
+             <if test="params.xihuClicknum != null and params.xihuClicknum != ''">
+                and a.xihu_clicknum = #{params.xihuClicknum}
+             </if>
+            <if test="params.shangxiaTypes != null and params.shangxiaTypes != ''">
+                and a.shangxia_types = #{params.shangxiaTypes}
+            </if>
+            <if test="params.xihuDeleteStart != null and params.xihuDeleteStart != ''">
+                <![CDATA[  and a.xihu_delete >= #{params.xihuDeleteStart}   ]]>
+            </if>
+            <if test="params.xihuDeleteEnd != null and params.xihuDeleteEnd != ''">
+                <![CDATA[  and a.xihu_delete <= #{params.xihuDeleteEnd}   ]]>
+            </if>
+             <if test="params.xihuDelete != null and params.xihuDelete != ''">
+                and a.xihu_delete = #{params.xihuDelete}
+             </if>
+            <if test=" params.xihuContent != '' and params.xihuContent != null and params.xihuContent != 'null' ">
+                and a.xihu_content like CONCAT('%',#{params.xihuContent},'%')
+            </if>
+
+        </where>
+
+        order by a.${params.orderBy} desc 
+    </select>
+
+</mapper>
